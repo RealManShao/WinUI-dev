@@ -221,7 +221,9 @@ public static class L
     public static string ServerList_Share            => Loc.GetString("ServerList_Share");
     public static string ServerList_AddFavorite      => Loc.GetString("ServerList_AddFavorite");
     public static string ServerList_RemoveFavorite   => Loc.GetString("ServerList_RemoveFavorite");
+    public static string ServerList_DoubleColumnTooltip => Loc.GetString("ServerList_DoubleColumnTooltip");
     public static string ServerList_FilterTooltip    => Loc.GetString("ServerList_FilterTooltip");
+    public static string ServerList_SingleColumnTooltip => Loc.GetString("ServerList_SingleColumnTooltip");
     public static string ServerList_SortTooltip      => Loc.GetString("ServerList_SortTooltip");
     public static string ServerList_TestLatencyTooltip => Loc.GetString("ServerList_TestLatencyTooltip");
     public static string ServerList_SortActiveHint   => Loc.GetString("ServerList_SortActiveHint");

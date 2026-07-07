@@ -13,6 +13,8 @@ namespace XrayUI.Views
 {
     public sealed partial class ServerListControl
     {
+        private const double DoubleColumnItemWidthDivisor = 2d;
+
         public ServerListViewModel ViewModel { get; set; } = null!;
         public IAsyncRelayCommand? SwitchToSelectedServerCommand { get; set; }
 
@@ -21,13 +23,18 @@ namespace XrayUI.Views
             this.InitializeComponent();
 
             // Localize attached properties that x:Uid does not address cleanly.
+            AutomationProperties.SetName(LayoutToggleButton, L.ServerList_DoubleColumnTooltip);
             AutomationProperties.SetName(FilterToggle, L.ServerList_FilterTooltip);
             AutomationProperties.SetName(TestLatencyButton, L.ServerList_TestLatencyTooltip);
             AutomationProperties.SetName(SortButton,   L.ServerList_SortTooltip);
+            ToolTipService.SetToolTip(LayoutToggleButton, L.ServerList_DoubleColumnTooltip);
             ToolTipService.SetToolTip(FilterToggle, L.ServerList_FilterTooltip);
             ToolTipService.SetToolTip(TestLatencyButton, L.ServerList_TestLatencyTooltip);
             ToolTipService.SetToolTip(SortActiveItem,  L.ServerList_SortActiveHint);
         }
+
+        private void ServerListControl_Loaded(object sender, RoutedEventArgs e)
+            => ApplyLayoutMode(LayoutToggleButton.IsChecked == true);
 
         private void ServerSearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
@@ -88,6 +95,18 @@ namespace XrayUI.Views
         private void ServersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ViewModel.SetSelectedServers(ServersListView.SelectedItems.OfType<ServerEntry>().ToArray());
+        }
+
+        private void LayoutToggleButton_Checked(object sender, RoutedEventArgs e)
+            => ApplyLayoutMode(true);
+
+        private void LayoutToggleButton_Unchecked(object sender, RoutedEventArgs e)
+            => ApplyLayoutMode(false);
+
+        private void ServersListView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (LayoutToggleButton.IsChecked == true)
+                UpdateDoubleColumnItemWidth();
         }
 
         private void ActiveBadge_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -210,6 +229,35 @@ namespace XrayUI.Views
 
         public static Vector3 ActiveBadgeScale(bool isActive)
             => isActive ? Vector3.One : new Vector3(0.92f, 0.92f, 1f);
+
+        private void ApplyLayoutMode(bool isDoubleColumn)
+        {
+            ServersListView.ItemsPanel = (ItemsPanelTemplate)Resources[isDoubleColumn
+                ? "DoubleColumnItemsPanel"
+                : "SingleColumnItemsPanel"];
+
+            SingleColumnLayoutIcon.Visibility = isDoubleColumn ? Visibility.Collapsed : Visibility.Visible;
+            DoubleColumnLayoutIcon.Visibility = isDoubleColumn ? Visibility.Visible : Visibility.Collapsed;
+
+            var tooltip = isDoubleColumn
+                ? L.ServerList_SingleColumnTooltip
+                : L.ServerList_DoubleColumnTooltip;
+            AutomationProperties.SetName(LayoutToggleButton, tooltip);
+            ToolTipService.SetToolTip(LayoutToggleButton, tooltip);
+
+            if (isDoubleColumn)
+                UpdateDoubleColumnItemWidth();
+        }
+
+        private void UpdateDoubleColumnItemWidth()
+        {
+            ServersListView.UpdateLayout();
+
+            if (ServersListView.ItemsPanelRoot is not ItemsWrapGrid wrapGrid)
+                return;
+
+            wrapGrid.ItemWidth = Math.Max(0d, ServersListView.ActualWidth / DoubleColumnItemWidthDivisor);
+        }
 
         // Foreground for the per-row latency number, keyed off the measured value:
         // failed probe (negative, e.g. -1) → critical, ≥200 ms → caution, else success.

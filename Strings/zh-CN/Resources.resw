@@ -788,6 +788,12 @@
   <data name="ServerList_FilterTooltip" xml:space="preserve">
     <value>分组和排序</value>
   </data>
+  <data name="ServerList_DoubleColumnTooltip" xml:space="preserve">
+    <value>切换为双栏</value>
+  </data>
+  <data name="ServerList_SingleColumnTooltip" xml:space="preserve">
+    <value>切换为单栏</value>
+  </data>
   <data name="ServerList_SortTooltip" xml:space="preserve">
     <value>排序</value>
   </data>

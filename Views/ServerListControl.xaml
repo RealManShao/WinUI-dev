@@ -9,8 +9,18 @@
              xmlns:vm="using:XrayUI.ViewModels"
              xmlns:views="using:XrayUI.Views"
              mc:Ignorable="d"
+             Loaded="ServerListControl_Loaded"
              d:DesignHeight="500"
              d:DesignWidth="420">
+
+    <UserControl.Resources>
+        <ItemsPanelTemplate x:Key="SingleColumnItemsPanel">
+            <ItemsStackPanel />
+        </ItemsPanelTemplate>
+        <ItemsPanelTemplate x:Key="DoubleColumnItemsPanel">
+            <ItemsWrapGrid Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -103,6 +113,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <AutoSuggestBox x:Name="ServerSearchBox"
@@ -122,8 +133,62 @@
                 </AutoSuggestBox.ItemTemplate>
             </AutoSuggestBox>
 
-            <ToggleButton x:Name="FilterToggle"
+            <ToggleButton x:Name="LayoutToggleButton"
                           Grid.Column="1"
+                          Background="Transparent"
+                          BorderBrush="Transparent"
+                          Padding="6"
+                          VerticalAlignment="Center"
+                          Checked="LayoutToggleButton_Checked"
+                          Unchecked="LayoutToggleButton_Unchecked">
+                <Grid Width="16"
+                      Height="16">
+                    <StackPanel x:Name="SingleColumnLayoutIcon"
+                                Orientation="Vertical"
+                                Spacing="2"
+                                VerticalAlignment="Center">
+                        <Border Height="4"
+                                CornerRadius="1"
+                                Background="{ThemeResource TextFillColorPrimaryBrush}" />
+                        <Border Height="4"
+                                CornerRadius="1"
+                                Background="{ThemeResource TextFillColorPrimaryBrush}" />
+                        <Border Height="4"
+                                CornerRadius="1"
+                                Background="{ThemeResource TextFillColorPrimaryBrush}" />
+                    </StackPanel>
+                    <Grid x:Name="DoubleColumnLayoutIcon"
+                          Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Border Margin="0,0,1,1"
+                                CornerRadius="1"
+                                Background="{ThemeResource TextFillColorPrimaryBrush}" />
+                        <Border Grid.Column="1"
+                                Margin="1,0,0,1"
+                                CornerRadius="1"
+                                Background="{ThemeResource TextFillColorPrimaryBrush}" />
+                        <Border Grid.Row="1"
+                                Margin="0,1,1,0"
+                                CornerRadius="1"
+                                Background="{ThemeResource TextFillColorPrimaryBrush}" />
+                        <Border Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="1,1,0,0"
+                                CornerRadius="1"
+                                Background="{ThemeResource TextFillColorPrimaryBrush}" />
+                    </Grid>
+                </Grid>
+            </ToggleButton>
+
+            <ToggleButton x:Name="FilterToggle"
+                          Grid.Column="2"
                           Background="Transparent"
                           BorderBrush="Transparent"
                           Padding="6"
@@ -135,7 +200,7 @@
             </ToggleButton>
 
             <Button x:Name="TestLatencyButton"
-                    Grid.Column="2"
+                    Grid.Column="3"
                     VerticalAlignment="Center"
                     Command="{x:Bind ViewModel.TestAllLatenciesCommand}"
                     Background="Transparent"
@@ -248,12 +313,14 @@
                   x:Name="ServersListView"
                   Margin="0,8,0,0"
                   ItemsSource="{x:Bind ViewModel.VisibleServers, Mode=OneWay}"
+                  ItemsPanel="{StaticResource SingleColumnItemsPanel}"
                   SelectedItem="{x:Bind ViewModel.SelectedServer, Mode=TwoWay}"
                   CanDragItems="{x:Bind ViewModel.CanReorderInCurrentChip, Mode=OneWay}"
                   CanReorderItems="{x:Bind ViewModel.CanReorderInCurrentChip, Mode=OneWay}"
                   AllowDrop="{x:Bind ViewModel.CanReorderInCurrentChip, Mode=OneWay}"
                   DragItemsCompleted="ServersListView_DragItemsCompleted"
                   SelectionChanged="ServersListView_SelectionChanged"
+                  SizeChanged="ServersListView_SizeChanged"
                   SelectionMode="Extended"
                   ScrollViewer.VerticalScrollBarVisibility="Auto">
 

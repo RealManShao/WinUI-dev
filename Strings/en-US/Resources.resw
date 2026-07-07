@@ -788,6 +788,12 @@
   <data name="ServerList_FilterTooltip" xml:space="preserve">
     <value>Group and sort</value>
   </data>
+  <data name="ServerList_DoubleColumnTooltip" xml:space="preserve">
+    <value>Switch to double-column layout</value>
+  </data>
+  <data name="ServerList_SingleColumnTooltip" xml:space="preserve">
+    <value>Switch to single-column layout</value>
+  </data>
   <data name="ServerList_SortTooltip" xml:space="preserve">
     <value>Sort</value>
   </data>
