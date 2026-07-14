@@ -242,6 +242,24 @@ namespace XrayUI
 
             flyout.Items.Add(new MenuFlyoutSeparator());
 
+            var proxyItem = new ToggleMenuFlyoutItem
+            {
+                Text = L.Tray_Proxy,
+                IsChecked = ViewModel.ControlPanel.IsRunning,
+                IsEnabled = ViewModel.ControlPanel.StartStopCommand.CanExecute(null)
+            };
+            proxyItem.Click += async (_, _) =>
+            {
+                var command = ViewModel.ControlPanel.StartStopCommand;
+                if (command.CanExecute(null))
+                {
+                    await command.ExecuteAsync(null);
+                }
+            };
+            flyout.Items.Add(proxyItem);
+
+            flyout.Items.Add(new MenuFlyoutSeparator());
+
             var exitItem = new MenuFlyoutItem { Text = L.Tray_Exit };
             exitItem.Click += (_, _) => ExitApplication();
             flyout.Items.Add(exitItem);

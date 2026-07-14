@@ -132,6 +132,9 @@
   <data name="Tray_Open" xml:space="preserve">
     <value>Show App</value>
   </data>
+  <data name="Tray_Proxy" xml:space="preserve">
+    <value>Start Proxy</value>
+  </data>
   <data name="Tray_Exit" xml:space="preserve">
     <value>Quit</value>
   </data>

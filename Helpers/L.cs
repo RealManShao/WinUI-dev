@@ -209,6 +209,7 @@ public static class L
     public static string MainWindow_ExpandFull => Loc.GetString("MainWindow_ExpandFull");
     public static string MainWindow_Close      => Loc.GetString("MainWindow_Close");
     public static string Tray_Open             => Loc.GetString("Tray_Open");
+    public static string Tray_Proxy            => Loc.GetString("Tray_Proxy");
     public static string Tray_Exit             => Loc.GetString("Tray_Exit");
     // Tray_TooltipRunning is parameterized ("XrayUI - {0}") — use Loc.Format at the call site.
     public static string Tray_TooltipIdle      => Loc.GetString("Tray_TooltipIdle");

@@ -132,6 +132,9 @@
   <data name="Tray_Open" xml:space="preserve">
     <value>打开窗口</value>
   </data>
+  <data name="Tray_Proxy" xml:space="preserve">
+    <value>启用代理</value>
+  </data>
   <data name="Tray_Exit" xml:space="preserve">
     <value>退出</value>
   </data>
